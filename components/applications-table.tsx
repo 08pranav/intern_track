@@ -1,7 +1,10 @@
 "use client"
 
-import { useState } from "react"
-import Link from "next/link"
+import { useEffect } from "react"
+import { useToast } from "@/hooks/use-toast"
+import { useAuth } from "@/hooks/use-auth"
+import { db } from "@/lib/firebase"
+import { collection, query, where, getDocs, deleteDoc, doc } from "firebase/firestore"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -14,6 +17,9 @@ import {
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
 import { MoreHorizontalIcon, PencilIcon, TrashIcon } from "lucide-react"
+import Link from "next/link"
+import { format } from "date-fns"
+import { Loader2 } from "lucide-react"
 
 interface Application {
   id: string

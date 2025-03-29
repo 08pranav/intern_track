@@ -36,13 +36,17 @@ interface InterviewAnswer {
 }
 
 interface InterviewFeedback {
-  id: string
-  answerId: string
-  overall: string
-  strengths: string[]
-  improvements: string[]
-  score: number
-  generatedAt: any
+  question: string;
+  answer: string;
+  feedback: string;
+  score: number;
+}
+
+interface InterviewReport {
+  overallScore: number;
+  strengths: string[];
+  weaknesses: string[];
+  feedback: InterviewFeedback[];
 }
 
 export default function InterviewReportPage() {
@@ -347,23 +351,23 @@ export default function InterviewReportPage() {
                             <div className="space-y-4">
                               <div>
                                 <p className="font-medium">Feedback:</p>
-                                <p className="text-sm text-muted-foreground mt-1">{feedback.overall}</p>
+                                <p className="text-sm text-muted-foreground mt-1">{feedback.feedback}</p>
                               </div>
 
                               <div className="grid gap-4 md:grid-cols-2">
                                 <div>
                                   <p className="font-medium">Strengths:</p>
                                   <ul className="list-disc pl-5 mt-1 text-sm text-muted-foreground">
-                                    {feedback.strengths.map((strength, i) => (
-                                      <li key={i}>{strength}</li>
+                                    {feedback.strengths.map((strength, _index) => (
+                                      <li key={strength}>{strength}</li>
                                     ))}
                                   </ul>
                                 </div>
                                 <div>
-                                  <p className="font-medium">Areas for Improvement:</p>
+                                  <p className="font-medium">Weaknesses:</p>
                                   <ul className="list-disc pl-5 mt-1 text-sm text-muted-foreground">
-                                    {feedback.improvements.map((improvement, i) => (
-                                      <li key={i}>{improvement}</li>
+                                    {feedback.weaknesses.map((weakness, _index) => (
+                                      <li key={weakness}>{weakness}</li>
                                     ))}
                                   </ul>
                                 </div>
@@ -412,23 +416,23 @@ export default function InterviewReportPage() {
                               <div className="space-y-4">
                                 <div>
                                   <p className="font-medium">Feedback:</p>
-                                  <p className="text-sm text-muted-foreground mt-1">{feedback.overall}</p>
+                                  <p className="text-sm text-muted-foreground mt-1">{feedback.feedback}</p>
                                 </div>
 
                                 <div className="grid gap-4 md:grid-cols-2">
                                   <div>
                                     <p className="font-medium">Strengths:</p>
                                     <ul className="list-disc pl-5 mt-1 text-sm text-muted-foreground">
-                                      {feedback.strengths.map((strength, i) => (
-                                        <li key={i}>{strength}</li>
+                                      {feedback.strengths.map((strength, _index) => (
+                                        <li key={strength}>{strength}</li>
                                       ))}
                                     </ul>
                                   </div>
                                   <div>
-                                    <p className="font-medium">Areas for Improvement:</p>
+                                    <p className="font-medium">Weaknesses:</p>
                                     <ul className="list-disc pl-5 mt-1 text-sm text-muted-foreground">
-                                      {feedback.improvements.map((improvement, i) => (
-                                        <li key={i}>{improvement}</li>
+                                      {feedback.weaknesses.map((weakness, _index) => (
+                                        <li key={weakness}>{weakness}</li>
                                       ))}
                                     </ul>
                                   </div>
@@ -477,19 +481,20 @@ export default function InterviewReportPage() {
                               <div className="space-y-4">
                                 <div>
                                   <p className="font-medium">Feedback:</p>
-                                  <p className="text-sm text-muted-foreground mt-1">{feedback.overall}</p>
+                                  <p className="text-sm text-muted-foreground mt-1">{feedback.feedback}</p>
                                 </div>
 
                                 <div className="grid gap-4 md:grid-cols-2">
                                   <div>
                                     <p className="font-medium">Strengths:</p>
                                     <ul className="list-disc pl-5 mt-1 text-sm text-muted-foreground">
-                                      {feedback.strengths.map((strength, i) => (
-                                        <li key={i}>{strength}</li>
+                                      {feedback.strengths.map((strength, _index) => (
+                                        <li key={strength}>{strength}</li>
                                       ))}
                                     </ul>
                                   </div>
                                   <div>
+                                    <p className="font-medium">Weaknesses:</p>
                                     <p className="font-medium">Areas for Improvement:</p>
                                     <ul className="list-disc pl-5 mt-1 text-sm text-muted-foreground">
                                       {feedback.improvements.map((improvement, i) => (

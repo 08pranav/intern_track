@@ -12,6 +12,15 @@ import {
   deleteDoc,
 } from "firebase/firestore"
 
+interface ApplicationData {
+  userId: string;
+  company: string;
+  position: string;
+  status: string;
+  date: string;
+  notes?: string;
+}
+
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url)
@@ -35,9 +44,9 @@ export async function GET(request: Request) {
     })
 
     return NextResponse.json({ applications })
-  } catch (error) {
-    console.error("Error fetching applications:", error)
-    return NextResponse.json({ error: "Failed to fetch applications" }, { status: 500 })
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
+    return NextResponse.json({ error: errorMessage }, { status: 500 })
   }
 }
 
@@ -68,9 +77,9 @@ export async function POST(request: Request) {
       id: docRef.id,
       ...applicationData,
     })
-  } catch (error) {
-    console.error("Error creating application:", error)
-    return NextResponse.json({ error: "Failed to create application" }, { status: 500 })
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
+    return NextResponse.json({ error: errorMessage }, { status: 500 })
   }
 }
 
@@ -85,7 +94,7 @@ export async function PUT(request: Request) {
     // Update application in Firestore
     const applicationRef = doc(db, "applications", id)
 
-    const updateData: any = {
+    const updateData: ApplicationData = {
       updatedAt: serverTimestamp(),
     }
 
@@ -99,9 +108,9 @@ export async function PUT(request: Request) {
     await updateDoc(applicationRef, updateData)
 
     return NextResponse.json({ success: true, id })
-  } catch (error) {
-    console.error("Error updating application:", error)
-    return NextResponse.json({ error: "Failed to update application" }, { status: 500 })
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
+    return NextResponse.json({ error: errorMessage }, { status: 500 })
   }
 }
 
@@ -118,9 +127,9 @@ export async function DELETE(request: Request) {
     await deleteDoc(doc(db, "applications", id))
 
     return NextResponse.json({ success: true })
-  } catch (error) {
-    console.error("Error deleting application:", error)
-    return NextResponse.json({ error: "Failed to delete application" }, { status: 500 })
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
+    return NextResponse.json({ error: errorMessage }, { status: 500 })
   }
 }
 

@@ -13,6 +13,9 @@ import { useAuth } from "@/components/auth-provider"
 import { db } from "@/lib/firebase"
 import { collection, query, where, getDocs, addDoc, serverTimestamp } from "firebase/firestore"
 import { useToast } from "@/hooks/use-toast"
+import { Badge } from "@/components/ui/badge"
+import { format } from "date-fns"
+import { Loader2 } from "lucide-react"
 
 interface Email {
   id: string
@@ -61,6 +64,10 @@ export default function EmailsPageClient() {
 
     checkEmailConnection()
   }, [user])
+
+  useEffect(() => {
+    fetchEmails();
+  }, [fetchEmails]);
 
   const fetchEmails = async () => {
     if (!user || !connected || !db) return
@@ -136,45 +143,6 @@ export default function EmailsPageClient() {
 
   const handleRefresh = () => {
     fetchEmails()
-  }
-
-  const handleUpdateSearchTerm = async () => {
-    if (!user || !db || !connected) return
-
-    try {
-      setLoading(true)
-
-      // Update search term in Firestore
-      const emailConfigRef = collection(db, "emailConfig")
-      const q = query(emailConfigRef, where("userId", "==", user.uid))
-      const querySnapshot = await getDocs(q)
-
-      if (!querySnapshot.empty) {
-        const docRef = querySnapshot.docs[0].ref
-        await addDoc(emailConfigRef, {
-          ...querySnapshot.docs[0].data(),
-          searchTerm,
-          updatedAt: serverTimestamp(),
-        })
-      }
-
-      toast({
-        title: "Success",
-        description: "Search term updated successfully.",
-      })
-
-      // Refresh emails with new search term
-      fetchEmails()
-    } catch (error) {
-      console.error("Error updating search term:", error)
-      toast({
-        title: "Error",
-        description: "Failed to update search term. Please try again.",
-        variant: "destructive",
-      })
-    } finally {
-      setLoading(false)
-    }
   }
 
   return (

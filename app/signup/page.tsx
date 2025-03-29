@@ -11,7 +11,9 @@ import { Label } from "@/components/ui/label"
 import { useAuth } from "@/components/auth-provider"
 import { BriefcaseIcon, AlertCircleIcon } from "lucide-react"
 import { app } from "@/lib/firebase"
-import type { FirebaseApp } from "firebase/app"
+import { useToast } from "@/hooks/use-toast"
+import { createUserWithEmailAndPassword } from "firebase/auth"
+import { auth } from "@/lib/firebase"
 
 export default function SignupPage() {
   const { signInWithGoogle, user } = useAuth()

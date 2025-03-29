@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server"
 
 // This would be a real implementation using the Gmail API
-export async function GET(request: Request) {
+export async function GET() {
   try {
     // In a real implementation, this would:
     // 1. Verify the user is authenticated
@@ -43,8 +43,7 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   try {
-    const body = await request.json()
-    const { code } = body
+    await request.json()
 
     // In a real implementation, this would:
     // 1. Exchange the authorization code for OAuth tokens

@@ -94,6 +94,7 @@ export default function DashboardPage() {
               </CardContent>
             </Card>
           </div>
+          <p>Welcome to your &quot;Intern Gati&quot; dashboard</p>
         </TabsContent>
         <TabsContent value="analytics" className="space-y-4">
           <Card>

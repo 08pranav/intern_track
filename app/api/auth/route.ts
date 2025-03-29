@@ -2,12 +2,23 @@ import { NextResponse } from "next/server"
 import { auth } from "@/lib/firebase"
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth"
 
+interface AuthData {
+  email: string;
+  password: string;
+  action: 'signin' | 'signup';
+}
+
 export async function POST(request: Request) {
   try {
-    const { action, email, password } = await request.json()
+    const data = await request.json() as AuthData
+    const { action, email, password } = data
 
     if (!email || !password) {
       return NextResponse.json({ error: "Email and password are required" }, { status: 400 })
+    }
+
+    if (!auth) {
+      return NextResponse.json({ error: "Firebase auth not initialized" }, { status: 500 })
     }
 
     let result
@@ -28,27 +39,9 @@ export async function POST(request: Request) {
       displayName: user.displayName,
       photoURL: user.photoURL,
     })
-  } catch (error: any) {
-    console.error("Authentication error:", error)
-
-    let errorMessage = "Authentication failed"
-    let statusCode = 500
-
-    if (error.code === "auth/user-not-found" || error.code === "auth/wrong-password") {
-      errorMessage = "Invalid email or password"
-      statusCode = 401
-    } else if (error.code === "auth/email-already-in-use") {
-      errorMessage = "Email already in use"
-      statusCode = 409
-    } else if (error.code === "auth/weak-password") {
-      errorMessage = "Password is too weak"
-      statusCode = 400
-    } else if (error.code === "auth/invalid-email") {
-      errorMessage = "Invalid email format"
-      statusCode = 400
-    }
-
-    return NextResponse.json({ error: errorMessage }, { status: statusCode })
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
+    return NextResponse.json({ error: errorMessage }, { status: 500 });
   }
 }
 
