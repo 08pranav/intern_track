@@ -44,17 +44,14 @@ export function EmailIntegration() {
               <div className="space-y-2">
                 <h3 className="font-medium text-lg">Connect your Gmail account</h3>
                 <p className="text-sm text-muted-foreground">
-                  Connect your Gmail account to automatically track interview-related emails
-                </p>
-                <p className="text-sm text-muted-foreground">
-                  We&apos;ll search for emails containing &quot;interview&quot; and &quot;application&quot; keywords
+                  We'll fetch emails containing "interview" to help you track your interview invitations.
                 </p>
               </div>
               <Button onClick={handleConnect} disabled={loading}>
                 {loading ? "Connecting..." : "Connect Gmail"}
               </Button>
               <p className="text-xs text-muted-foreground">
-                Don&apos;t worry, we only read emails related to your job search
+                We only read emails with your permission and never store your credentials.
               </p>
             </div>
           </CardContent>

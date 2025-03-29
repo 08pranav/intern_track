@@ -1,6 +1,7 @@
 "use client"
 
 import type React from "react"
+
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
@@ -11,9 +12,6 @@ import { Label } from "@/components/ui/label"
 import { useAuth } from "@/components/auth-provider"
 import { BriefcaseIcon, AlertCircleIcon } from "lucide-react"
 import { app } from "@/lib/firebase"
-import { useToast } from "@/hooks/use-toast"
-import { createUserWithEmailAndPassword } from "firebase/auth"
-import { auth } from "@/lib/firebase"
 
 export default function SignupPage() {
   const { signInWithGoogle, user } = useAuth()
@@ -31,12 +29,11 @@ export default function SignupPage() {
     }
   }, [])
 
-  useEffect(() => {
-    // Redirect if already logged in
-    if (user) {
-      router.push("/dashboard")
-    }
-  }, [user, router])
+  // Redirect if already logged in
+  if (user) {
+    router.push("/dashboard")
+    return null
+  }
 
   const handleEmailSignup = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -109,52 +106,60 @@ export default function SignupPage() {
               </div>
             </div>
             <form onSubmit={handleEmailSignup}>
-              <div className="grid gap-4">
-                <div className="grid gap-2">
-                  <Label htmlFor="name">Name</Label>
+              <div className="grid gap-2">
+                <div className="grid gap-1">
+                  <Label htmlFor="name">Full Name</Label>
                   <Input
                     id="name"
-                    type="text"
                     placeholder="John Doe"
+                    type="text"
+                    autoCapitalize="words"
+                    autoComplete="name"
+                    autoCorrect="off"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     disabled={isLoading}
                   />
                 </div>
-                <div className="grid gap-2">
+                <div className="grid gap-1">
                   <Label htmlFor="email">Email</Label>
                   <Input
                     id="email"
+                    placeholder="name@example.com"
                     type="email"
-                    placeholder="john@example.com"
+                    autoCapitalize="none"
+                    autoComplete="email"
+                    autoCorrect="off"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     disabled={isLoading}
                   />
                 </div>
-                <div className="grid gap-2">
+                <div className="grid gap-1">
                   <Label htmlFor="password">Password</Label>
                   <Input
                     id="password"
+                    placeholder="••••••••"
                     type="password"
+                    autoComplete="new-password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     disabled={isLoading}
                   />
                 </div>
                 <Button type="submit" disabled={isLoading}>
-                  {isLoading ? "Creating account..." : "Create account"}
+                  {isLoading ? "Creating account..." : "Create Account"}
                 </Button>
               </div>
             </form>
           </CardContent>
-          <CardFooter>
-            <p className="text-sm text-muted-foreground">
+          <CardFooter className="flex flex-col">
+            <div className="mt-2 text-center text-sm text-muted-foreground">
               Already have an account?{" "}
-              <Link href="/login" className="text-primary hover:underline">
+              <Link href="/login" className="underline">
                 Sign in
               </Link>
-            </p>
+            </div>
           </CardFooter>
         </Card>
       </div>

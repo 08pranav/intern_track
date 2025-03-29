@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server"
 
-export async function GET() {
+export async function POST(request: Request) {
   try {
     // In a real implementation, this would:
     // 1. Receive the uploaded resume file

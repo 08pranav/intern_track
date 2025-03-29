@@ -9,7 +9,7 @@ import { DashboardShell } from "@/components/dashboard-shell"
 import { ApplicationsTable } from "@/components/applications-table"
 import { useAuth } from "@/components/auth-provider"
 import { db } from "@/lib/firebase"
-import { collection, query, where, getDocs } from "firebase/firestore"
+import { collection, query, where, orderBy, getDocs } from "firebase/firestore"
 import { useToast } from "@/hooks/use-toast"
 
 interface Application {
@@ -30,14 +30,14 @@ export default function ApplicationsPage() {
 
   useEffect(() => {
     const fetchApplications = async () => {
-      if (!user || !db) return
+      if (!user) return
 
       try {
         setLoading(true)
 
         // Query Firestore for applications
         const applicationsRef = collection(db, "applications")
-        const q = query(applicationsRef, where("userId", "==", user.uid))
+        const q = query(applicationsRef, where("userId", "==", user.uid), orderBy("date", "desc"))
 
         const querySnapshot = await getDocs(q)
         const fetchedApplications: Application[] = []
@@ -48,9 +48,6 @@ export default function ApplicationsPage() {
             ...doc.data(),
           } as Application)
         })
-
-        // Sort applications by date in memory
-        fetchedApplications.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
 
         setApplications(fetchedApplications)
       } catch (error) {

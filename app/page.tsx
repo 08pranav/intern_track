@@ -31,17 +31,17 @@ export default function Home() {
           </div>
           <nav className="flex flex-1 items-center justify-end space-x-4">
             {user ? (
-              <Button asChild>
-                <Link href="/dashboard">Dashboard</Link>
-              </Button>
+              <Link href="/dashboard" className="inline-block">
+                <Button>Dashboard</Button>
+              </Link>
             ) : (
               <>
-                <Link href="/login" className="text-sm font-medium">
+                <Link href="/login" className="text-sm font-medium hover:underline">
                   Login
                 </Link>
-                <Button asChild>
-                  <Link href="/signup">Sign Up</Link>
-                </Button>
+                <Link href="/signup" className="inline-block">
+                  <Button>Sign Up</Button>
+                </Link>
               </>
             )}
           </nav>
@@ -77,12 +77,12 @@ export default function Home() {
                 </p>
               </div>
               <div className="space-x-4">
-                <Button asChild size="lg">
-                  <Link href={user ? "/dashboard" : "/signup"}>{user ? "Go to Dashboard" : "Get Started"}</Link>
-                </Button>
-                <Button variant="outline" size="lg" asChild>
-                  <Link href="/features">Learn More</Link>
-                </Button>
+                <Link href={user ? "/dashboard" : "/signup"} className="inline-block">
+                  <Button size="lg">{user ? "Go to Dashboard" : "Get Started"}</Button>
+                </Link>
+                <Link href="/features" className="inline-block">
+                  <Button variant="outline" size="lg">Learn More</Button>
+                </Link>
               </div>
             </div>
           </div>
